@@ -2,6 +2,8 @@ const link = '../assets/'
 
 export const splash = require(link + 'splash.png')
 
+export const app_logo_text = require(link + 'app_logo_text.png')
+
 export const bgCover = require(link + 'BG.png')
 
 export const app_logo = require(link + 'app_logo.jpg')
@@ -27,3 +29,13 @@ export const asadMalick = require(link + 'asadMalick.png')
 export const shahmir = require(link + 'shahmir.png')
 
 export const mohsin = require(link + 'mohsin.jpeg')
+
+export const linkedIN = require(link + 'linkedIN.png')
+
+export const gitHub = require(link + 'gitHub.png')
+
+export const instagram = require(link + 'instagram.jpeg')
+
+export const behance = require(link + 'behance.jpeg')
+
+export const userProfile = require(link + 'userProfile.png')
