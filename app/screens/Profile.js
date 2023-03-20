@@ -112,6 +112,11 @@ const Profile = ({ navigation }) => {
                     renderItem={randerItem}
                 />
             </View>
+
+            <Text style={styles.appVersionText}>
+                {`App version 1.0.0 (2)`}
+            </Text>
+
         </View>
     )
 }
@@ -174,6 +179,16 @@ const styles = StyleSheet.create({
         height: 20,
         width: 20,
         marginRight: 5
+    },
+    appVersionText: {
+        color: Colors.buttonDisabled,
+        alignSelf: 'center',
+        fontWeight: '700',
+        fontSize: 15,
+        marginBottom: Platform.select({
+            android: 10,
+            ios: 20,
+        }),
     },
 })
 
