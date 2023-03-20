@@ -73,9 +73,9 @@ const styles = StyleSheet.create({
         borderRightWidth: 8,
         flexDirection: 'row',
         marginVertical: 12,
-        shadowOpacity: 0.6,
+        shadowOpacity: 0.3,
         borderRadius: 6,
-        shadowRadius: 3,
+        shadowRadius: 4,
         minHeight: 100,
         shadowOffset: {
             height: 0,
