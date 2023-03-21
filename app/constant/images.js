@@ -39,3 +39,9 @@ export const instagram = require(link + 'instagram.jpeg')
 export const behance = require(link + 'behance.jpeg')
 
 export const userProfile = require(link + 'userProfile.png')
+
+export const inProgress = require(link + 'inProgress1.5x.png')
+
+export const inComplete = require(link + 'inComplete1.5x.png')
+
+export const complete = require(link + 'comlete1.5x.png')

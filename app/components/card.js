@@ -10,7 +10,10 @@ import {
 import { Colors } from '../styles/color'
 
 import {
-    clock_sign
+    clock_sign,
+    inProgress,
+    inComplete,
+    complete
 } from '../constant/images'
 
 const Card = ({ item, navigat }) => {
@@ -28,8 +31,9 @@ const Card = ({ item, navigat }) => {
                                     ? Colors.backLog
                                     : item.type == 'COMPLETE'
                                         ? Colors.complete
-                                        : Colors.white
-                }
+                                        : Colors.white,
+                },
+                // item.type == 'BACKLOG' && { borderRightWidth: 8, borderBottomRightRadius: 8, borderTopRightRadius: 8 },
             ]}
             activeOpacity={0.7}
             onPress={navigat}
@@ -44,6 +48,32 @@ const Card = ({ item, navigat }) => {
                     <Text style={styles.time}>{item.time}</Text>
                 </View>
             </View>
+            {/* {item.type != 'BACKLOG' && 
+                <Image
+                    source={
+                        item.type == 'IN PROGRESS' 
+                            ? inProgress
+                            : item.type == 'IN COMPLETE'
+                                ? inComplete
+                                : item.type == 'COMPLETE'
+                                    ? complete
+                                    : null
+                    }
+                    style={styles.sideBar} resizeMode='contain'
+                />
+            }
+            {item.type == 'BACKLOG' &&
+                <View style={styles.typeBox}>
+                    <Text
+                        style={[
+                            styles.type,
+                            item.type == 'BACKLOG' && { color: Colors.backLog, marginRight: -22 }
+                        ]}
+                    >
+                        {item.type}
+                    </Text>
+                </View>
+            } */}
 
             <View style={styles.typeBox}>
                 <Text
@@ -66,9 +96,9 @@ const styles = StyleSheet.create({
     card: {
         borderRightColor: Colors.white,
         backgroundColor: Colors.white,
-        borderBottomRightRadius: 8,
+        borderBottomRightRadius: 12,
         shadowColor: Colors.black,
-        borderTopRightRadius: 8,
+        borderTopRightRadius: 12,
         marginHorizontal: 20,
         borderRightWidth: 8,
         flexDirection: 'row',
@@ -111,6 +141,13 @@ const styles = StyleSheet.create({
         color: Colors.time,
         lineHeight: 18,
         fontSize: 14,
+    },
+
+    sideBar: {
+        borderBottomRightRadius: 12,
+        borderTopRightRadius: 12,
+        marginRight: -3 ,
+        maxHeight: 110,
     },
     typeBox: {
         position: 'absolute',
