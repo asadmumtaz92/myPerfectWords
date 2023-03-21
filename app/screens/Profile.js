@@ -1,9 +1,11 @@
-import React, { useLayoutEffect } from "react"
+import React, { useLayoutEffect, useState } from "react"
 import {
     TouchableOpacity,
+    ActivityIndicator,
     StyleSheet,
     Dimensions,
     StatusBar,
+    Platform,
     FlatList,
     Alert,
     Image,
@@ -26,29 +28,39 @@ import {
     link
 } from '../constant/tabData'
 
+import CustomLoaderModal from '../utlz/CustomLoaderModal'
+
 const deviceWidth = Dimensions.get('window').width
 
 const Profile = ({ navigation }) => {
+
+    const [loader, setLoader] = useState(false)
 
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => {
                 return (
                     <TouchableOpacity
+                        disabled={loader ? true : false}
                         onPress={() => logoutHandler()} activeOpacity={0.9}
                         style={[gStyles.navBtn, styles.nav]}
                     >
-                        <Image
-                            source={logout_sign} resizeMode='cover' style={styles.logoutIcon}
-                        />
-                        <Text style={[gStyles.navBtnText, { fontSize: 16, }]}>{`Logout`}</Text>
+                        {loader
+                            ? <ActivityIndicator size={'small'} color={Colors.white} style={{ marginRight: 10 }} />
+                            : <>
+                                <Image source={logout_sign} resizeMode='cover' style={styles.logoutIcon} />
+                                <Text style={[gStyles.navBtnText, { fontSize: 16, }]}>{`Logout`}</Text>
+                            </>
+                        }
+
                     </TouchableOpacity>
                 )
             },
             headerLeft: () => {
                 return (
                     <TouchableOpacity
-                        onPress={() => navigation.goBack() } activeOpacity={0.9}
+                        disabled={loader ? true : false}
+                        onPress={() => navigation.goBack()} activeOpacity={0.9}
                         style={[gStyles.navBtn, styles.nav]}
                     >
                         <Image
@@ -59,22 +71,26 @@ const Profile = ({ navigation }) => {
                 )
             },
         })
-    }, [navigation])
+    }, [navigation, loader])
 
     const logoutHandler = () => {
+        setLoader(true)
         setTimeout(() => {
-            navigation.navigate('Login')
-        }, 1000)
+            setLoader(false)
+            setTimeout(() => {
+                navigation.navigate('Login')
+            }, 200);
+        }, 2000)
     }
     const editProfileHandler = () => {
-        Alert.alert('Edit Name & Photo','\nOpen modal and update.')
+        Alert.alert('Edit Name & Photo', '\nOpen modal and update.')
     }
     const randerItem = (items) => {
         let item = items.item
         return (
             <TouchableOpacity style={styles.item} onPress={item.nav} activeOpacity={0.8}>
                 <Text style={styles.itemText}>{item.title}</Text>
-                <Image  source={next_sign} style={styles.itemImg} resizeMode='cover' />
+                <Image source={next_sign} style={styles.itemImg} resizeMode='cover' />
             </TouchableOpacity>
         )
     }
@@ -87,31 +103,39 @@ const Profile = ({ navigation }) => {
                 barStyle='light-content'
                 StatusBarAnimation='fade'
             />
+                <Image source={asadMalick} style={styles.userProfileImage} resizeMode='cover' />
 
-            <Image source={asadMalick} style={styles.userProfileImage} resizeMode='cover' />
+                <View style={styles.nameBox}>
+                    <Text style={styles.name}>{`Malick Asad`}</Text>
 
-            <View style={styles.nameBox}>
+                    <TouchableOpacity
+                        onPress={() => editProfileHandler()}
+                        style={{ alignItems: 'center' }} activeOpacity={0.8}
+                    >
+                        <Image source={edit_sign} style={{ marginLeft: 8, }} resizeMode='cover' />
+                    </TouchableOpacity>
+                </View>
 
-                <Text style={styles.name}>{`Malick Asad`}</Text>
+                {/* LINK LIST */}
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        contentContainerStyle={{ paddingBottom: 20 }}
+                        data={link}
+                        showsVerticalScrollIndicator={false}
+                        keyExtractor={(item, index) => index}
+                        renderItem={randerItem}
+                    />
+                </View>
 
-                <TouchableOpacity 
-                    onPress={() => editProfileHandler() }
-                    style={{ alignItems: 'center'}} activeOpacity={0.8}
-                >
-                    <Image source={edit_sign} style={{ marginLeft: 8, }} resizeMode='cover' />
-                </TouchableOpacity>
-            </View>
-
-           {/* LINK LIST */}
-            <View style={{ flex: 1 }}>
-                <FlatList
-                    contentContainerStyle={{ paddingBottom: 20 }}
-                    data={link}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={(item, index) => index}
-                    renderItem={randerItem}
-                />
-            </View>
+                {!loader && 
+                    <Text style={styles.appVersionText}>
+                        {`App version 1.0.0 (2)`}
+                    </Text>
+                }
+                
+                {loader && 
+                    <CustomLoaderModal />
+                }
         </View>
     )
 }
@@ -128,7 +152,7 @@ const styles = StyleSheet.create({
         width: 19,
     },
     navImg: {
-        marginRight: 2, 
+        marginRight: 2,
         height: 14,
         width: 14,
     },
@@ -159,11 +183,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         marginHorizontal: 20,
-        marginVertical: 10,
+        marginVertical: 7,
         borderBottomWidth: 0.2,
-        paddingBottom: 6,
+        paddingVertical: 6,
         borderColor: Colors.primery,
-        alignItems:'center'
+        alignItems: 'center',
     },
     itemText: {
         color: Colors.primery,
@@ -174,6 +198,17 @@ const styles = StyleSheet.create({
         height: 20,
         width: 20,
         marginRight: 5
+    },
+
+    appVersionText: {
+        color: Colors.buttonDisabled,
+        alignSelf: 'center',
+        fontWeight: '700',
+        fontSize: 15,
+        marginBottom: Platform.select({
+            android: 10,
+            ios: 20,
+        }),
     },
 })
 

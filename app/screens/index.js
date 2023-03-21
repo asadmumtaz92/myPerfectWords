@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect } from "react"
 import {
     KeyboardAvoidingView,
+    ActivityIndicator,
     TouchableOpacity,
     ImageBackground,
     StyleSheet,
@@ -9,7 +10,6 @@ import {
     Keyboard,
     Platform,
     Image,
-    Alert,
     View,
     Text,
 } from "react-native"
@@ -17,22 +17,31 @@ import {
 import { Colors } from "../styles/color"
 import { gStyles } from "../styles/globle"
 
+import { BASE_URL, API} from '../enviroments/index'
+
 import {
     bgCover,
     at_sign,
-    lock_sign
+    lock_sign,
 } from '../constant/images'
+
+import CustomModal  from '../utlz/CustomModal'
 
 const Slack_App = ({ navigation }) => {
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('asad@StlllR.com')
+    const [password, setPassword] = useState('qwerty123')
+    const [loader, setLoader] = useState(false)
+    const [error, setError] = useState(false)
+    const [title, setTitle] = useState('')
+    const [desc, setDesc] = useState('')
 
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => {
                 return (
                     <TouchableOpacity
+                        disabled={loader ? true : false}
                         onPress={() => registerHandler()} style={gStyles.navBtn} activeOpacity={0.9}
                     >
                         <Text style={gStyles.navBtnText}>{`REGISTER`}</Text>
@@ -40,7 +49,7 @@ const Slack_App = ({ navigation }) => {
                 )
             },
         })
-    }, [navigation])
+    }, [navigation, loader])
 
     const emailHandler = (text) => {
         setEmail(text)
@@ -50,13 +59,60 @@ const Slack_App = ({ navigation }) => {
     }
 
     const loginHandler = () => {
+        setLoader(true)
+        Keyboard.dismiss()
+
         if (!email.length || !password.length) {
-            Alert.alert('Warnging Message', '\nPlease enter email & Password first!');
+            setTimeout(() => {
+                setTitle('Login Error')
+                setDesc('Please enter the valid credentials!')
+                setError(true)
+            }, 1000)
         }
         else {
-            console.log('Email: ',email,' Password: ', password)
-            Keyboard.dismiss()
+            console.log('Email: ', email,'\nPassword: ', password)
+            // try {
+            //     fetch(`${API}/login`, {
+            //         method: 'POST',
+            //         body: JSON.stringify({
+            //             email: email,
+            //             password: password,
+            //         }),
+            //         headers: {
+            //             'Content-type': 'application/json',
+            //         },
+            //     })
+            //         .then(response => response.json())
+            //         .then(response => {
+            //             if (!response['errors']) {
+            //                 console.log('User login Successfully!') // console.log('L85: ', response.success.token)
+            //                 // if (response.success.token.length > 0) {
+            //                 //     navigation.navigate('Reservations', {
+            //                 //         token: response.success.token,
+            //                 //     })
+            //                 //     storeUserToken(response.success.token)
+            //                 // }
+            //                 setTimeout(() => {
+            //                     setLoader(false)
+            //                     navigation.navigate('Home')
+            //                 }, 2000)
+            //             }
+            //         })
+            //         .catch(error => {
+            //             console.log('Login API Error: ', error)
+
+            //             setTitle('Login Error')
+            //             let tt = `Enter valid Email & Password...! ${error}`
+            //             let er = error
+            //             setDesc(tt)
+            //             setError(true)
+            //         })
+            // } catch (err) {
+            //     console.log('Login Try Catch Error: ', err)
+            // }
+
             setTimeout(() => {
+                setLoader(false)
                 navigation.navigate('Home')
             }, 2000)
         }
@@ -94,7 +150,12 @@ const Slack_App = ({ navigation }) => {
                         <TextInput
                             placeholderTextColor={'rgba(34, 34, 34, 0.3)'}
                             onChangeText={(text) => emailHandler(text)}
-                            onSubmitEditing={() => Keyboard.dismiss}
+                            onSubmitEditing={() => {
+                                if (email.length > 5 && password.length > 4) {
+                                    loginHandler()
+                                } 
+                                Keyboard.dismiss()
+                            }}
                             selectionColor={Colors.selectionColor}
                             onBlur={() => Keyboard.dismiss}
                             keyboardType='email-address'
@@ -121,7 +182,12 @@ const Slack_App = ({ navigation }) => {
                         <TextInput
                             placeholderTextColor={'rgba(34, 34, 34, 0.3)'}
                             onChangeText={(text) => passwordHandler(text)}
-                            onSubmitEditing={() => Keyboard.dismiss}
+                            onSubmitEditing={() => {
+                                if(email.length > 5 && password.length > 4) {
+                                    loginHandler()
+                                }
+                                Keyboard.dismiss()
+                            }}
                             selectionColor={Colors.selectionColor}
                             onBlur={() => Keyboard.dismiss}
                             keyboardType='email-address'
@@ -143,9 +209,13 @@ const Slack_App = ({ navigation }) => {
 
                     {/* LOG IN */}
                     <TouchableOpacity
+                        disabled={loader ? true : false}
                         onPress={() => loginHandler()} style={gStyles.largeBtn} activeOpacity={0.9}
                     >
-                        <Text style={gStyles.largeBtnText}>{`LOG IN`}</Text>
+                        {loader 
+                            ? <ActivityIndicator size={'small'} color={Colors.white} />
+                            : <Text style={gStyles.largeBtnText}>{`LOG IN`}</Text>
+                        }
                     </TouchableOpacity>
 
                     {/* FORGOT */}
@@ -158,21 +228,45 @@ const Slack_App = ({ navigation }) => {
                     {/* REGISTER NEW */}
                     <>
                         {/* <View style={styles.regBox}>
-                                <Text style={gStyles.text}>
-                                    {`Have no account yet?`}
-                                </Text>
+                                <Text style={gStyles.text}>{`Have no account yet?`}</Text>
                                 <TouchableOpacity
-                                    onPress={() => registerHandler() } style={styles.regBtn} activeOpacity={0.9}
+                                    onPress={() => registerHandler() }
+                                    style={styles.regBtn} activeOpacity={0.9}
                                 >
-                                    <Text style={styles.regText}>
-                                        {`REGISTER`}
-                                    </Text>
+                                    <Text style={styles.regText}>{`REGISTER`}</Text>
                                 </TouchableOpacity>
                             </View> */}
                     </>
 
                 </View>
+
+                {/* MODAL FOR LOGIN ERROR */}
+                <>
+                    {error && 
+                        <CustomModal
+                            title={title}
+                            desc={desc}
+
+                            clickAbleRight={() => {
+                                setError(false)
+                                 setLoader(false)
+                            }}
+                            buttonRightText='ok'
+                            // buttonRightStyle={{}}
+                            // buttonRightTextStyle={{}}
+
+                            // clickAbleLeft={() => { setLoader(false) }}
+                            // buttonLeftText='no'
+                            // buttonLeftStyle={{}}
+                            // buttonLeftTextStyle={{}}
+
+                            // image={lock_sign}
+                            // imageStyle={{ width: 30, height: 30 }}
+                        />
+                    }
+                </>
             </KeyboardAvoidingView>
+
         </ImageBackground>
     )
 }

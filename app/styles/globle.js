@@ -44,7 +44,7 @@ export const gStyles = StyleSheet.create({
 
     largeBtn: {
         backgroundColor: Colors.buttonColor,
-        paddingVertical: 10,
+        paddingVertical: 15,
         alignSelf: 'center',
         borderRadius: 5,
         width: '100%',
@@ -70,7 +70,7 @@ export const gStyles = StyleSheet.create({
         borderWidth: 0.5,
         marginBottom: 20,
         borderRadius: 6,
-        height: 40,
+        height: 50,
     },
     icon: {
         marginRight: 5,
@@ -85,7 +85,7 @@ export const gStyles = StyleSheet.create({
         borderWidth: 0,
         paddingLeft: 5,
         fontSize: 16,
-        height: 39.0,
+        height: 49.0,
         padding: 0,
         flex: 1,
     },

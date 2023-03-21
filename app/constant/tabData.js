@@ -71,11 +71,11 @@ export const link = [
         title: 'Enable Notification',
         nav: () => { }
     },
-    {
-        id: 1,
-        title: 'Play Notification Sound',
-        nav: () => { }
-    },
+    // {
+    //     id: 1,
+    //     title: 'Play Notification Sound',
+    //     nav: () => { }
+    // },
     {
         id: 2,
         title: 'Change Password',
@@ -97,10 +97,13 @@ export const team = [
     {
         id: 0,
         image: asadMalick,
-        name: 'Malick Asad',
+        name: 'Malick Asad Mumtaz',
         email: 'asadmumtaz92@outlook.com',
         desi: 'React Native Developer',
-        link: 'Github | LinkedIN | Instagram',
+        linkedin: 'https://www.linkedin.com/in/asadmumtaz92/',
+        github: 'https://github.com/asadmumtaz92/',
+        instagram: 'https://www.instagram.com/asadmumtaz92/',
+        behance: '', // 'https://www.behance.net/asadmumtaz92'
     },
     {
         id: 1,
@@ -108,15 +111,20 @@ export const team = [
         name: 'Shahmir Alam',
         email: 'sh4mi@hotmail.com',
         desi: 'Full Stack Developer',
-        link: 'Github | LinkedIN | Instagram',
+        linkedin: 'https://www.linkedin.com/in/sh4mi/',
+        github: 'https://github.com/sh4mi/',
+        instagram: 'https://www.instagram.com/sh4hmii/',
+        behance: ''
     },
-
     {
-        id: 1,
+        id: 2,
         image: mohsin,
         name: 'Muhammad Mohsin',
         email: 'm.mohsin@gmail.com',
-        desi: 'User Experience Designer',
-        link: 'Github | LinkedIN | Instagram',
+        desi: 'UX/UI Designer',
+        linkedin: 'https://www.linkedin.com/in/muhammad-mohsin-166112159/',
+        github: '', // 'https://github.com/asadmumtaz92/',
+        instagram: '', // 'https://www.instagram.com/asadmumtaz92/',
+        behance: '', // 'https://www.behance.net/asadmumtaz92'
     },
 ]
