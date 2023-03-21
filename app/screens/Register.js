@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect } from "react";
 import {
     KeyboardAvoidingView,
+    ActivityIndicator,
     TouchableOpacity,
     ImageBackground,
     StyleSheet,
@@ -29,6 +30,7 @@ const Register = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [fullname, setFullname] = useState('')
+    const [loader, setLoader] = useState(false)
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -40,6 +42,7 @@ const Register = ({ navigation }) => {
             headerRight: () => {
                 return (
                     <TouchableOpacity
+                        disabled={loader ? true : false}
                         onPress={() => loginHandler()} style={gStyles.navBtn} activeOpacity={0.9}
                     >
                         <Text style={gStyles.navBtnText}>{`LOG IN`}</Text>
@@ -47,7 +50,7 @@ const Register = ({ navigation }) => {
                 )
             },
         })
-    }, [navigation])
+    }, [navigation, loader])
 
     const loginHandler = () => {
         navigation.navigate('Login')
@@ -62,13 +65,38 @@ const Register = ({ navigation }) => {
     const fullnameHandler = (text) => {
         setFullname(text)
     }
+
+    const myAlert = (title, desc, clickable) => {
+        return Alert.alert(
+            title,
+            '\n' + desc,
+            [
+                { text: 'OK', onPress: () => clickable },
+            ]
+        )
+    }
     
     const registerHandler = () => {
+        setLoader(true)
         if (!email.length || !password.length || !fullname.length) {
-            Alert.alert('Warnging Message', '\nPlease Enter Email, Password & Full Name First!')
+            myAlert(
+                'Warnging Message',
+                'Please Enter Email, Password & Full Name First!',
+                () => { setLoader(false) }
+            )
         }
         else {
-            Keyboard.dismiss();
+            Keyboard.dismiss()
+            setTimeout(() => {
+                setLoader(true)
+                Alert.alert(
+                    'Success Message',
+                    '\nYou account successfully created!',
+                    [
+                        { text: 'OK', onPress: () => { setLoader(false); loginHandler() } },
+                    ]
+                )
+            }, 2000)
         }
     }
 
@@ -78,7 +106,8 @@ const Register = ({ navigation }) => {
                 animated={true}
                 backgroundColor={Colors.buttonColor}
                 barStyle='light-content'
-                StatusBarAnimation='fade'
+                hidden={false}
+                statusBarAnimation='fade'
             />
 
             <KeyboardAvoidingView style={gStyles.bgCover}
@@ -178,9 +207,14 @@ const Register = ({ navigation }) => {
 
                     {/* REGISTER */}
                     <TouchableOpacity
+                        disabled={loader ? true : false}
                         onPress={() => registerHandler()} style={gStyles.largeBtn} activeOpacity={0.9}
                     >
-                        <Text style={gStyles.largeBtnText}>{`REGISTER`}</Text>
+                        {loader
+                            ? <ActivityIndicator size={'small'} color={Colors.white} />
+                            : <Text style={gStyles.largeBtnText}>{`REGISTER`}</Text>
+                        }
+                        
                     </TouchableOpacity>
 
                     {/* LOG IN */}

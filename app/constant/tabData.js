@@ -71,11 +71,11 @@ export const link = [
         title: 'Enable Notification',
         nav: () => { }
     },
-    {
-        id: 1,
-        title: 'Play Notification Sound',
-        nav: () => { }
-    },
+    // {
+    //     id: 1,
+    //     title: 'Play Notification Sound',
+    //     nav: () => { }
+    // },
     {
         id: 2,
         title: 'Change Password',

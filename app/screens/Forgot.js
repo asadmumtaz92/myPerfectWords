@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect } from "react";
 import {
     KeyboardAvoidingView,
+    ActivityIndicator,
     TouchableOpacity,
     ImageBackground,
     StyleSheet,
@@ -24,6 +25,7 @@ import {
 const Forgot = ({ navigation }) => {
 
     const [email, setEmail] = useState('')
+    const [loader, setLoader] = useState(false)
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -35,6 +37,7 @@ const Forgot = ({ navigation }) => {
             headerRight: () => {
                 return (
                     <TouchableOpacity
+                        disabled={loader ? true : false}
                         onPress={() => loginHandler()} style={gStyles.navBtn} activeOpacity={0.9}
                     >
                         <Text style={gStyles.navBtnText}>{`LOG IN`}</Text>
@@ -51,11 +54,15 @@ const Forgot = ({ navigation }) => {
         setEmail(text)
     }
     const forgotHandler = () => {
+        setLoader(true)
         if (!email.length ) {
             Alert.alert('Warnging Message', '\nPlease enter email first!')
         }
         else {
             Keyboard.dismiss();
+            setTimeout(() => {
+                setLoader(false)
+            }, 2000);
         }
     }
 
@@ -108,6 +115,7 @@ const Forgot = ({ navigation }) => {
 
                     {/* SUBMIT */}
                     <TouchableOpacity
+                        disabled={loader ? true : false}
                         onPress={() => forgotHandler()} style={gStyles.largeBtn} activeOpacity={0.9}
                     >
                         <Text style={gStyles.largeBtnText}>{`SUBMIT`}</Text>

@@ -1,9 +1,11 @@
-import React, { useLayoutEffect } from "react"
+import React, { useLayoutEffect, useState } from "react"
 import {
     TouchableOpacity,
+    ActivityIndicator,
     StyleSheet,
     Dimensions,
     StatusBar,
+    Platform,
     FlatList,
     Alert,
     Image,
@@ -30,25 +32,33 @@ const deviceWidth = Dimensions.get('window').width
 
 const Profile = ({ navigation }) => {
 
+    const [loader, setLoader] = useState(false)
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => {
                 return (
                     <TouchableOpacity
+                        disabled={loader ? true : false}
                         onPress={() => logoutHandler()} activeOpacity={0.9}
                         style={[gStyles.navBtn, styles.nav]}
                     >
-                        <Image
-                            source={logout_sign} resizeMode='cover' style={styles.logoutIcon}
-                        />
-                        <Text style={[gStyles.navBtnText, { fontSize: 16, }]}>{`Logout`}</Text>
+                        {loader
+                            ? <ActivityIndicator size={'small'} color={Colors.white} style={{ marginRight: 10 }} />
+                            : <>
+                                <Image source={logout_sign} resizeMode='cover' style={styles.logoutIcon} />
+                                <Text style={[gStyles.navBtnText, { fontSize: 16, }]}>{`Logout`}</Text>
+                            </>
+                        }
+
                     </TouchableOpacity>
                 )
             },
             headerLeft: () => {
                 return (
                     <TouchableOpacity
-                        onPress={() => navigation.goBack() } activeOpacity={0.9}
+                        disabled={loader ? true : false}
+                        onPress={() => navigation.goBack()} activeOpacity={0.9}
                         style={[gStyles.navBtn, styles.nav]}
                     >
                         <Image
@@ -59,22 +69,24 @@ const Profile = ({ navigation }) => {
                 )
             },
         })
-    }, [navigation])
+    }, [navigation, loader])
 
     const logoutHandler = () => {
+        setLoader(true)
         setTimeout(() => {
             navigation.navigate('Login')
-        }, 1000)
+            setLoader(false)
+        }, 2000)
     }
     const editProfileHandler = () => {
-        Alert.alert('Edit Name & Photo','\nOpen modal and update.')
+        Alert.alert('Edit Name & Photo', '\nOpen modal and update.')
     }
     const randerItem = (items) => {
         let item = items.item
         return (
             <TouchableOpacity style={styles.item} onPress={item.nav} activeOpacity={0.8}>
                 <Text style={styles.itemText}>{item.title}</Text>
-                <Image  source={next_sign} style={styles.itemImg} resizeMode='cover' />
+                <Image source={next_sign} style={styles.itemImg} resizeMode='cover' />
             </TouchableOpacity>
         )
     }
@@ -94,15 +106,15 @@ const Profile = ({ navigation }) => {
 
                 <Text style={styles.name}>{`Malick Asad`}</Text>
 
-                <TouchableOpacity 
-                    onPress={() => editProfileHandler() }
-                    style={{ alignItems: 'center'}} activeOpacity={0.8}
+                <TouchableOpacity
+                    onPress={() => editProfileHandler()}
+                    style={{ alignItems: 'center' }} activeOpacity={0.8}
                 >
                     <Image source={edit_sign} style={{ marginLeft: 8, }} resizeMode='cover' />
                 </TouchableOpacity>
             </View>
 
-           {/* LINK LIST */}
+            {/* LINK LIST */}
             <View style={{ flex: 1 }}>
                 <FlatList
                     contentContainerStyle={{ paddingBottom: 20 }}
@@ -116,7 +128,6 @@ const Profile = ({ navigation }) => {
             <Text style={styles.appVersionText}>
                 {`App version 1.0.0 (2)`}
             </Text>
-
         </View>
     )
 }
@@ -133,7 +144,7 @@ const styles = StyleSheet.create({
         width: 19,
     },
     navImg: {
-        marginRight: 2, 
+        marginRight: 2,
         height: 14,
         width: 14,
     },
@@ -164,11 +175,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         marginHorizontal: 20,
-        marginVertical: 10,
+        marginVertical: 7,
         borderBottomWidth: 0.2,
-        paddingBottom: 6,
+        paddingVertical: 6,
         borderColor: Colors.primery,
-        alignItems:'center'
+        alignItems: 'center',
     },
     itemText: {
         color: Colors.primery,
@@ -180,6 +191,7 @@ const styles = StyleSheet.create({
         width: 20,
         marginRight: 5
     },
+
     appVersionText: {
         color: Colors.buttonDisabled,
         alignSelf: 'center',
