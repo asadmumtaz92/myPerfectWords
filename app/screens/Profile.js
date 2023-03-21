@@ -28,6 +28,8 @@ import {
     link
 } from '../constant/tabData'
 
+import CustomLoaderModal from '../utlz/CustomLoaderModal'
+
 const deviceWidth = Dimensions.get('window').width
 
 const Profile = ({ navigation }) => {
@@ -74,8 +76,10 @@ const Profile = ({ navigation }) => {
     const logoutHandler = () => {
         setLoader(true)
         setTimeout(() => {
-            navigation.navigate('Login')
             setLoader(false)
+            setTimeout(() => {
+                navigation.navigate('Login')
+            }, 200);
         }, 2000)
     }
     const editProfileHandler = () => {
@@ -99,35 +103,39 @@ const Profile = ({ navigation }) => {
                 barStyle='light-content'
                 StatusBarAnimation='fade'
             />
+                <Image source={asadMalick} style={styles.userProfileImage} resizeMode='cover' />
 
-            <Image source={asadMalick} style={styles.userProfileImage} resizeMode='cover' />
+                <View style={styles.nameBox}>
+                    <Text style={styles.name}>{`Malick Asad`}</Text>
 
-            <View style={styles.nameBox}>
+                    <TouchableOpacity
+                        onPress={() => editProfileHandler()}
+                        style={{ alignItems: 'center' }} activeOpacity={0.8}
+                    >
+                        <Image source={edit_sign} style={{ marginLeft: 8, }} resizeMode='cover' />
+                    </TouchableOpacity>
+                </View>
 
-                <Text style={styles.name}>{`Malick Asad`}</Text>
+                {/* LINK LIST */}
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        contentContainerStyle={{ paddingBottom: 20 }}
+                        data={link}
+                        showsVerticalScrollIndicator={false}
+                        keyExtractor={(item, index) => index}
+                        renderItem={randerItem}
+                    />
+                </View>
 
-                <TouchableOpacity
-                    onPress={() => editProfileHandler()}
-                    style={{ alignItems: 'center' }} activeOpacity={0.8}
-                >
-                    <Image source={edit_sign} style={{ marginLeft: 8, }} resizeMode='cover' />
-                </TouchableOpacity>
-            </View>
-
-            {/* LINK LIST */}
-            <View style={{ flex: 1 }}>
-                <FlatList
-                    contentContainerStyle={{ paddingBottom: 20 }}
-                    data={link}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={(item, index) => index}
-                    renderItem={randerItem}
-                />
-            </View>
-
-            <Text style={styles.appVersionText}>
-                {`App version 1.0.0 (2)`}
-            </Text>
+                {!loader && 
+                    <Text style={styles.appVersionText}>
+                        {`App version 1.0.0 (2)`}
+                    </Text>
+                }
+                
+                {loader && 
+                    <CustomLoaderModal />
+                }
         </View>
     )
 }
