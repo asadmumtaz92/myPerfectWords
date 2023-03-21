@@ -85,12 +85,12 @@ const Slack_App = ({ navigation }) => {
             //         .then(response => response.json())
             //         .then(response => {
             //             if (!response['errors']) {
-            //                 console.log('User login Successfully!'); // console.log('L85: ', response.success.token);
+            //                 console.log('User login Successfully!') // console.log('L85: ', response.success.token)
             //                 // if (response.success.token.length > 0) {
             //                 //     navigation.navigate('Reservations', {
             //                 //         token: response.success.token,
-            //                 //     });
-            //                 //     storeUserToken(response.success.token);
+            //                 //     })
+            //                 //     storeUserToken(response.success.token)
             //                 // }
             //                 setTimeout(() => {
             //                     setLoader(false)
@@ -99,16 +99,16 @@ const Slack_App = ({ navigation }) => {
             //             }
             //         })
             //         .catch(error => {
-            //             console.log('Login API Error: ', error);
+            //             console.log('Login API Error: ', error)
 
             //             setTitle('Login Error')
             //             let tt = `Enter valid Email & Password...! ${error}`
             //             let er = error
             //             setDesc(tt)
             //             setError(true)
-            //         });
+            //         })
             // } catch (err) {
-            //     console.log('Login Try Catch Error: ', err);
+            //     console.log('Login Try Catch Error: ', err)
             // }
 
             setTimeout(() => {
@@ -186,7 +186,7 @@ const Slack_App = ({ navigation }) => {
                                 if(email.length > 5 && password.length > 4) {
                                     loginHandler()
                                 }
-                                Keyboard.dismiss();
+                                Keyboard.dismiss()
                             }}
                             selectionColor={Colors.selectionColor}
                             onBlur={() => Keyboard.dismiss}
@@ -241,25 +241,30 @@ const Slack_App = ({ navigation }) => {
                 </View>
 
                 {/* MODAL FOR LOGIN ERROR */}
-                {error && 
-                    <CustomModal
-                        title={title}
-                        desc={desc}
+                <>
+                    {error && 
+                        <CustomModal
+                            title={title}
+                            desc={desc}
 
-                        clickAbleRight={() => { setError(false); setLoader(false) }}
-                        buttonRightText='ok'
-                        // buttonRightStyle={{}}
-                        // buttonRightTextStyle={{}}
+                            clickAbleRight={() => {
+                                setError(false)
+                                 setLoader(false)
+                            }}
+                            buttonRightText='ok'
+                            // buttonRightStyle={{}}
+                            // buttonRightTextStyle={{}}
 
-                        // clickAbleLeft={() => { setLoader(false) }}
-                        // buttonLeftText='no'
-                        // buttonLeftStyle={{}}
-                        // buttonLeftTextStyle={{}}
+                            // clickAbleLeft={() => { setLoader(false) }}
+                            // buttonLeftText='no'
+                            // buttonLeftStyle={{}}
+                            // buttonLeftTextStyle={{}}
 
-                        // image={lock_sign}
-                        // imageStyle={{ width: 30, height: 30 }}
-                    />
-                }
+                            // image={lock_sign}
+                            // imageStyle={{ width: 30, height: 30 }}
+                        />
+                    }
+                </>
             </KeyboardAvoidingView>
 
         </ImageBackground>

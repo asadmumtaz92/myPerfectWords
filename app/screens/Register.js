@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react"
 import {
     KeyboardAvoidingView,
     ActivityIndicator,
@@ -10,13 +10,14 @@ import {
     Keyboard,
     Platform,
     Image,
-    Alert,
     View,
     Text,
-} from "react-native";
+} from "react-native"
 
 import { Colors } from "../styles/color"
 import { gStyles } from "../styles/globle"
+
+import { BASE_URL, API } from '../enviroments/index'
 
 import {
     bgCover,
@@ -25,12 +26,18 @@ import {
     user_sign,
 } from '../constant/images'
 
+import CustomModal from '../utlz/CustomModal'
+
 const Register = ({ navigation }) => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [fullname, setFullname] = useState('')
     const [loader, setLoader] = useState(false)
+    const [error, setError] = useState(false)
+    const [succes, setSucces] = useState(false)
+    const [title, setTitle] = useState('')
+    const [desc, setDesc] = useState('')
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -51,10 +58,7 @@ const Register = ({ navigation }) => {
             },
         })
     }, [navigation, loader])
-
-    const loginHandler = () => {
-        navigation.navigate('Login')
-    }
+    
 
     const emailHandler = (text) => {
         setEmail(text)
@@ -65,39 +69,78 @@ const Register = ({ navigation }) => {
     const fullnameHandler = (text) => {
         setFullname(text)
     }
-
-    const myAlert = (title, desc, clickable) => {
-        return Alert.alert(
-            title,
-            '\n' + desc,
-            [
-                { text: 'OK', onPress: () => clickable },
-            ]
-        )
+    const loginHandler = () => {
+        navigation.navigate('Login')
     }
     
     const registerHandler = () => {
         setLoader(true)
+        Keyboard.dismiss()
+
         if (!email.length || !password.length || !fullname.length) {
-            myAlert(
-                'Warnging Message',
-                'Please Enter Email, Password & Full Name First!',
-                () => { setLoader(false) }
-            )
+            setTimeout(() => {
+                setTitle('Register Error')
+                setDesc('Please enter valid email, password & fullname first!')
+                setError(true)
+            }, 1000)
         }
         else {
-            Keyboard.dismiss()
+            console.log('Fullname: ', fullname, '\nEmail: ', email, '\nPassword: ', password)
+            // try {
+            //     fetch(`${API}/login`, {
+            //         method: 'POST',
+            //         body: JSON.stringify({
+            //             email: email,
+            //             password: password,
+            //         }),
+            //         headers: {
+            //             'Content-type': 'application/json',
+            //         },
+            //     })
+            //         .then(response => response.json())
+            //         .then(response => {
+            //             if (!response['errors']) {
+            //                 console.log('User login Successfully!') // console.log('L85: ', response.success.token)
+            //                 // if (response.success.token.length > 0) {
+            //                 //     navigation.navigate('Reservations', {
+            //                 //         token: response.success.token,
+            //                 //     })
+            //                 //     storeUserToken(response.success.token)
+            //                 // }
+            //                 setTimeout(() => {
+            //                     setLoader(false)
+            //                     navigation.navigate('Home')
+            //                 }, 2000)
+            //             }
+            //         })
+            //         .catch(error => {
+            //             console.log('Login API Error: ', error)
+
+            //             setTitle('Login Error')
+            //             let tt = `Enter valid Email & Password...! ${error}`
+            //             let er = error
+            //             setDesc(tt)
+            //             setError(true)
+            //         })
+            // } catch (err) {
+            //     console.log('Login Try Catch Error: ', err)
+            // }
+
             setTimeout(() => {
-                setLoader(true)
-                Alert.alert(
-                    'Success Message',
-                    '\nYou account successfully created!',
-                    [
-                        { text: 'OK', onPress: () => { setLoader(false); loginHandler() } },
-                    ]
-                )
-            }, 2000)
+                setTitle('Success Message')
+                setDesc('Your account successfully created!')
+                setSucces(true)
+            }, 1000)
         }
+    }
+
+    const leftClickAble = () => {
+        setSucces(false)
+
+        setLoader(false)
+        setTimeout(() => {
+            loginHandler()
+        }, 200)
     }
 
     return (
@@ -110,8 +153,7 @@ const Register = ({ navigation }) => {
                 statusBarAnimation='fade'
             />
 
-            <KeyboardAvoidingView style={gStyles.bgCover}
-                behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+            <KeyboardAvoidingView style={gStyles.bgCover} behavior={Platform.OS == 'ios' ? 'position' : 'height'}
             >
                 <View style={gStyles.bottomView}>
 
@@ -238,6 +280,55 @@ const Register = ({ navigation }) => {
                     </Text>
 
                 </View>
+
+                {/* MODAL FOR REGISTR ERROR */}
+                <>
+                    {error &&
+                        <CustomModal
+                            title={title}
+                            desc={desc}
+
+                            clickAbleRight={() => {
+                                setError(false)
+                                setLoader(false)
+                            }}
+                            buttonRightText='ok'
+                            // buttonRightStyle={{}}
+                            // buttonRightTextStyle={{}}
+
+                            // clickAbleLeft={() => { setLoader(false) }}
+                            // buttonLeftText='no'
+                            // buttonLeftStyle={{}}
+                            // buttonLeftTextStyle={{}}
+
+                            // image={lock_sign}
+                            // imageStyle={{ width: 30, height: 30 }}
+                        />
+                    }
+                </>
+
+                {/* MODAL FOR REGISTER SUCCESS */}
+                <>
+                    {succes &&
+                        <CustomModal
+                            title={title}
+                            desc={desc}
+
+                            clickAbleRight={leftClickAble}
+                            buttonRightText='ok'
+                            // buttonRightStyle={{}}
+                            // buttonRightTextStyle={{}}
+
+                            // clickAbleLeft={() => { setLoader(false) }}
+                            // buttonLeftText='no'
+                            // buttonLeftStyle={{}}
+                            // buttonLeftTextStyle={{}}
+
+                            // image={lock_sign}
+                            // imageStyle={{ width: 30, height: 30 }}
+                        />
+                    }
+                </>
             </KeyboardAvoidingView>
         </ImageBackground>
     )
