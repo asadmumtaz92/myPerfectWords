@@ -102,7 +102,7 @@ export const team = [
         desi: 'React Native Developer',
         linkedin: 'https://www.linkedin.com/in/asadmumtaz92/',
         github: 'https://github.com/asadmumtaz92/',
-        instagram: 'https://www.instagram.com/asadmumtaz92/',
+        instagram: '',//'https://www.instagram.com/asadmumtaz92/',
         behance: '', // 'https://www.behance.net/asadmumtaz92'
     },
     {
@@ -113,7 +113,7 @@ export const team = [
         desi: 'Full Stack Developer',
         linkedin: 'https://www.linkedin.com/in/sh4mi/',
         github: 'https://github.com/sh4mi/',
-        instagram: 'https://www.instagram.com/sh4hmii/',
+        instagram: '',//'https://www.instagram.com/sh4hmii/',
         behance: ''
     },
     {
@@ -123,8 +123,8 @@ export const team = [
         email: 'm.mohsin@gmail.com',
         desi: 'UX/UI Designer',
         linkedin: 'https://www.linkedin.com/in/muhammad-mohsin-166112159/',
-        github: '', // 'https://github.com/asadmumtaz92/',
-        instagram: '', // 'https://www.instagram.com/asadmumtaz92/',
-        behance: '', // 'https://www.behance.net/asadmumtaz92'
+        github: '', 
+        instagram: '',
+        behance: 'https://www.behance.net/muhammadmohsin6'
     },
 ]

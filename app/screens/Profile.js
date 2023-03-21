@@ -129,7 +129,7 @@ const Profile = ({ navigation }) => {
 
                 {!loader && 
                     <Text style={styles.appVersionText}>
-                        {`App version 1.0.0 (2)`}
+                        {`App version 1.0 (3)`}
                     </Text>
                 }
                 
@@ -181,13 +181,13 @@ const styles = StyleSheet.create({
 
     item: {
         justifyContent: 'space-between',
-        flexDirection: 'row',
-        marginHorizontal: 20,
-        marginVertical: 7,
-        borderBottomWidth: 0.2,
-        paddingVertical: 6,
         borderColor: Colors.primery,
+        borderBottomWidth: 0.2,
         alignItems: 'center',
+        marginHorizontal: 20,
+        flexDirection: 'row',
+        marginVertical: 7,
+        paddingVertical: 6,
     },
     itemText: {
         color: Colors.primery,
@@ -195,9 +195,9 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     itemImg: {
+        marginRight: 5,
         height: 20,
         width: 20,
-        marginRight: 5
     },
 
     appVersionText: {

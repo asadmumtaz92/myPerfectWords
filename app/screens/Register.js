@@ -153,7 +153,7 @@ const Register = ({ navigation }) => {
                 statusBarAnimation='fade'
             />
 
-            <KeyboardAvoidingView style={gStyles.bgCover} behavior={Platform.OS == 'ios' ? 'position' : 'height'}
+            <KeyboardAvoidingView style={gStyles.bgCover} behavior={Platform.OS == 'ios' ? 'position' : loader ? 'position' : 'height'}
             >
                 <View style={gStyles.bottomView}>
 
@@ -175,8 +175,8 @@ const Register = ({ navigation }) => {
                             selectionColor={Colors.selectionColor}
                             onBlur={() => Keyboard.dismiss}
                             keyboardType='email-address'
-                            placeholder="YOUR E-MAIL"
                             selectTextOnFocus={false}
+                            placeholder="YOUR E-MAIL"
                             autoCapitalize='none'
                             autoCorrect={false}
                             spellCheck={false}
@@ -214,7 +214,7 @@ const Register = ({ navigation }) => {
                             numberOfLines={1}
                             multiline={false}
                             value={password}
-                            inputMode='text'
+                            inputMode='none'
                             maxLength={200}
                         />
                     </View>

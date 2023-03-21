@@ -142,7 +142,7 @@ const Forgot = ({ navigation }) => {
                 StatusBarAnimation='fade'
             />
 
-            <KeyboardAvoidingView style={gStyles.bgCover} behavior={Platform.OS == 'ios' ? 'position' : 'height'} >
+            <KeyboardAvoidingView style={gStyles.bgCover} behavior={Platform.OS == 'ios' ? 'position' : loader || succes ? 'position' : 'height'} >
                 <View style={gStyles.bottomView}>
 
                     {/* HEADING */}

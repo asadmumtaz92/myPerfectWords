@@ -29,8 +29,8 @@ import CustomModal  from '../utlz/CustomModal'
 
 const Slack_App = ({ navigation }) => {
 
-    const [email, setEmail] = useState('asad@StlllR.com')
-    const [password, setPassword] = useState('qwerty123')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const [loader, setLoader] = useState(false)
     const [error, setError] = useState(false)
     const [title, setTitle] = useState('')
@@ -134,7 +134,7 @@ const Slack_App = ({ navigation }) => {
                 StatusBarAnimation='fade'
             />
 
-            <KeyboardAvoidingView style={gStyles.bgCover} behavior={Platform.OS == 'ios' ? 'position' : 'height'}>
+            <KeyboardAvoidingView style={gStyles.bgCover} behavior={Platform.OS == 'ios' ? 'position' : loader ? 'position' : 'height'}>
                 <View style={gStyles.bottomView}>
 
                     {/* HEADING */}
@@ -201,7 +201,7 @@ const Slack_App = ({ navigation }) => {
                             autoFocus={false}
                             numberOfLines={1}
                             multiline={false}
-                            inputMode='email'
+                            inputMode='none'
                             value={password}
                             maxLength={200}
                         />

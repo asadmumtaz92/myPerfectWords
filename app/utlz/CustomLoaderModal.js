@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import {
     ActivityIndicator,
     StyleSheet,
-    Dimensions,
     Modal,
     View,
 } from 'react-native'
@@ -24,9 +23,7 @@ const CustomLoaderModal = () => {
             >
                 <View style={styles.centeredView}>
 
-                    <View style={styles.modalView}>
-                        <ActivityIndicator size='large' color={Colors.primery} />
-                    </View>
+                    <ActivityIndicator size='large' color={Colors.primery} />
 
                 </View>
             </Modal>
@@ -37,25 +34,9 @@ const CustomLoaderModal = () => {
 
 const styles = StyleSheet.create({
     centeredView: {
-        // backgroundColor: '#00000022',
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
-    },
-    modalView: {
-        width: Dimensions.get('window').width - 70,
-        paddingHorizontal: 15,
-        paddingVertical: 20,
-        borderRadius: 15,
-
-        shadowColor: Colors.black,
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        shadowOffset: {
-            width: 0,
-            height: 0,
-        },
-        elevation: 3,
     },
 })
 
