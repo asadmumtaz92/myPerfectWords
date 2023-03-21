@@ -98,8 +98,8 @@ const AboutApp = ({ navigation }) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 {/* ABOUT APP DESCRIPTION */}
                 <View style={styles.appNoteBox}>
-                    <Text style={styles.appNote}>
-                        <Text style={styles.appName}>
+                    <Text style={styles.appName}>
+                        <Text style={styles.appNote}>
                             {`myPerfect Words `}
                         </Text>
                         is the ultimate tool for teams looking to streamline their communication
@@ -141,25 +141,25 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
     appNote: {
-        textAlign: 'justify',
-        color: Colors.black,
+        color: Colors.primery,
         alignSelf: 'center',
-        fontWeight: '400',
-        marginBottom: 30,
-        lineHeight: 24,
-        fontSize: 16,
+        fontWeight: '500',
+        lineHeight: 30,
+        fontSize: 26,
     },
     appName: {
-        color: Colors.primery,
-        fontWeight: '500',
-        fontSize: 26,
+        textAlign: 'justify',
+        color: Colors.black,
+        fontWeight: '400',
+        marginBottom: 30,
+        fontSize: 17,
     },
 
     box: {
-        paddingBottom: Platform.select({ 
-            android: 5,
-            ios: 20,
-        })
+        // paddingBottom: Platform.select({ 
+        //     android: 5,
+        //     ios: 20,
+        // })
     },
     teamBox: {
         borderBottomColor: Colors.gray,

@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect } from "react"
 import {
     KeyboardAvoidingView,
+    ActivityIndicator,
     TouchableOpacity,
     StyleSheet,
     StatusBar,
@@ -14,6 +15,8 @@ import {
 import { Colors } from "../styles/color"
 import { gStyles } from "../styles/globle"
 
+import { BASE_URL, API } from '../enviroments/index'
+
 import LogoBox from '../components/logoBox'
 
 import {
@@ -21,10 +24,17 @@ import {
     at_sign
 } from '../constant/images'
 
+import CustomModal from '../utlz/CustomModal'
+
 const ChangePassword = ({ navigation }) => {
 
     const [newPassword, setNewPassword] = useState('')
     const [prevPassword, setPrevPassword] = useState('')
+    const [loader, setLoader] = useState(false)
+    const [error, setError] = useState(false)
+    const [succes, setSucces] = useState(false)
+    const [title, setTitle] = useState('')
+    const [desc, setDesc] = useState('')
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -60,13 +70,79 @@ const ChangePassword = ({ navigation }) => {
     const prevPasswordHandler = (text) => {
         setPrevPassword(text)
     }
+    const profileHandler = () => {
+        navigation.navigate('Profile')
+    }
 
     const changePasswordHandler = () => {
-        Keyboard.dismiss();
-        console.log(
-            'Old: ', prevPassword,
-            '\nNew: ', newPassword
-        )
+        setLoader(true)
+        Keyboard.dismiss()
+        console.log('Old: ', prevPassword, '\nNew: ', newPassword)
+
+        if (!prevPassword.length || !newPassword.length ) {
+            setTimeout(() => {
+                setTitle('Warnging Message')
+                setDesc('Please enter previous & new password first!')
+                setError(true)
+            }, 1000)
+        }
+        else {
+            // console.log('Email: ', email)
+            // try {
+            //     fetch(`${API}/login`, {
+            //         method: 'POST',
+            //         body: JSON.stringify({
+            //             email: email,
+            //             password: password,
+            //         }),
+            //         headers: {
+            //             'Content-type': 'application/json',
+            //         },
+            //     })
+            //         .then(response => response.json())
+            //         .then(response => {
+            //             if (!response['errors']) {
+            //                 console.log('User login Successfully!') // console.log('L85: ', response.success.token)
+            //                 // if (response.success.token.length > 0) {
+            //                 //     navigation.navigate('Reservations', {
+            //                 //         token: response.success.token,
+            //                 //     })
+            //                 //     storeUserToken(response.success.token)
+            //                 // }
+            //                 setTimeout(() => {
+            //                     setLoader(false)
+            //                     navigation.navigate('Home')
+            //                 }, 2000)
+            //             }
+            //         })
+            //         .catch(error => {
+            //             console.log('Login API Error: ', error)
+
+            //             setTitle('Login Error')
+            //             let tt = `Enter valid Email & Password...! ${error}`
+            //             let er = error
+            //             setDesc(tt)
+            //             setError(true)
+            //         })
+            // } catch (err) {
+            //     console.log('Login Try Catch Error: ', err)
+            // }
+
+            setTimeout(() => {
+                setTitle('Success Message')
+                setDesc(`Your password has been changed successfully!`)
+                setSucces(true)
+            }, 1000)
+        }
+    }
+
+    const leftClickAble = () => {
+        setSucces(false)
+
+        setLoader(false)
+        setTimeout(() => {
+            profileHandler()
+        }, 200)
     }
 
     return (
@@ -80,9 +156,7 @@ const ChangePassword = ({ navigation }) => {
 
             <LogoBox />
 
-            <KeyboardAvoidingView style={{ justifyContent: 'flex-end' }}
-                behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-            >
+            <KeyboardAvoidingView style={{ justifyContent: 'flex-end' }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'} >
                 <View style={gStyles.bottomView}>
 
                     {/* HEADING */}
@@ -96,14 +170,15 @@ const ChangePassword = ({ navigation }) => {
                             source={at_sign} style={gStyles.icon} resizeMode='contain'
                         />
                         <TextInput
-                            placeholderTextColor={'rgba(34, 34, 34, 0.3)'}
                             onChangeText={(text) => prevPasswordHandler(text)}
+                            placeholderTextColor={'rgba(34, 34, 34, 0.3)'}
                             onSubmitEditing={() => Keyboard.dismiss}
                             selectionColor={Colors.selectionColor}
                             onBlur={() => Keyboard.dismiss}
                             placeholder='PREVIOUS PASSWORD'
                             keyboardType='email-address'
                             selectTextOnFocus={false}
+                            secureTextEntry={true}
                             autoCapitalize='none'
                             value={prevPassword}
                             autoCorrect={false}
@@ -112,7 +187,7 @@ const ChangePassword = ({ navigation }) => {
                             autoFocus={false}
                             numberOfLines={1}
                             multiline={false}
-                            inputMode='email'
+                            inputMode='none'
                             maxLength={200}
                         />
                     </View>
@@ -123,14 +198,15 @@ const ChangePassword = ({ navigation }) => {
                             source={at_sign} style={gStyles.icon} resizeMode='contain'
                         />
                         <TextInput
-                            placeholderTextColor={'rgba(34, 34, 34, 0.3)'}
                             onChangeText={(text) => newPasswordHandler(text)}
+                            placeholderTextColor={'rgba(34, 34, 34, 0.3)'}
                             onSubmitEditing={() => Keyboard.dismiss}
                             selectionColor={Colors.selectionColor}
                             onBlur={() => Keyboard.dismiss}
                             keyboardType='email-address'
-                            selectTextOnFocus={false}
                             placeholder='NEW PASSWORD'
+                            selectTextOnFocus={false}
+                            secureTextEntry={true}
                             autoCapitalize='none'
                             autoCorrect={false}
                             value={newPassword}
@@ -139,16 +215,20 @@ const ChangePassword = ({ navigation }) => {
                             autoFocus={false}
                             numberOfLines={1}
                             multiline={false}
-                            inputMode='email'
+                            inputMode='none'
                             maxLength={200}
                         />
                     </View>
 
                     {/* SUBMIT */}
                     <TouchableOpacity
+                        disabled={loader ? true : false}
                         onPress={() => changePasswordHandler()} style={gStyles.largeBtn} activeOpacity={0.9}
                     >
-                        <Text style={gStyles.largeBtnText}>{`SUBMIT`}</Text>
+                        {loader
+                            ? <ActivityIndicator size={'small'} color={Colors.white} />
+                            : <Text style={gStyles.largeBtnText}>{`SUBMIT`}</Text>
+                        }
                     </TouchableOpacity>
 
                     {/* NOTE */}
@@ -158,6 +238,55 @@ const ChangePassword = ({ navigation }) => {
                     </Text>
 
                 </View>
+
+                {/* MODAL FOR REGISTR ERROR */}
+                <>
+                    {error &&
+                        <CustomModal
+                            title={title}
+                            desc={desc}
+
+                            clickAbleRight={() => {
+                                setError(false)
+                                setLoader(false)
+                            }}
+                            buttonRightText='ok'
+                            // buttonRightStyle={{}}
+                            // buttonRightTextStyle={{}}
+
+                            // clickAbleLeft={() => { setLoader(false) }}
+                            // buttonLeftText='no'
+                            // buttonLeftStyle={{}}
+                            // buttonLeftTextStyle={{}}
+
+                            // image={lock_sign}
+                            // imageStyle={{ width: 30, height: 30 }}
+                        />
+                    }
+                </>
+
+                {/* MODAL FOR REGISTER SUCCESS */}
+                <>
+                    {succes &&
+                        <CustomModal
+                            title={title}
+                            desc={desc}
+
+                            clickAbleRight={leftClickAble}
+                            buttonRightText='ok'
+                            // buttonRightStyle={{}}
+                            // buttonRightTextStyle={{}}
+
+                            // clickAbleLeft={() => { setLoader(false) }}
+                            // buttonLeftText='no'
+                            // buttonLeftStyle={{}}
+                            // buttonLeftTextStyle={{}}
+
+                            // image={lock_sign}
+                            // imageStyle={{ width: 30, height: 30 }}
+                        />
+                    }
+                </>
             </KeyboardAvoidingView>
         </View>
     )

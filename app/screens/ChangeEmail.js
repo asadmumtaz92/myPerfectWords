@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect } from "react"
 import {
     KeyboardAvoidingView,
+    ActivityIndicator,
     TouchableOpacity,
     StyleSheet,
     StatusBar,
@@ -14,6 +15,8 @@ import {
 import { Colors } from "../styles/color"
 import { gStyles } from "../styles/globle"
 
+import { BASE_URL, API } from '../enviroments/index'
+
 import LogoBox from '../components/logoBox'
 
 import {
@@ -21,10 +24,17 @@ import {
     at_sign
 } from '../constant/images'
 
+import CustomModal from '../utlz/CustomModal'
+
 const ChangeEmail = ({ navigation }) => {
 
     const [newEmail, setNewEmail] = useState('')
     const [prevEmail, setPrevEmail] = useState('')
+    const [loader, setLoader] = useState(false)
+    const [error, setError] = useState(false)
+    const [succes, setSucces] = useState(false)
+    const [title, setTitle] = useState('')
+    const [desc, setDesc] = useState('')
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -60,13 +70,79 @@ const ChangeEmail = ({ navigation }) => {
     const prevEmailHandler = (text) => {
         setPrevEmail(text)
     }
+    const profileHandler = () => {
+        navigation.navigate('Profile')
+    }
 
     const changeEmailHandler = () => {
-        Keyboard.dismiss();
-        console.log(
-            'Old: ', prevEmail,
-            '\nNew: ', newEmail
-        )
+        setLoader(true)
+        Keyboard.dismiss()
+        console.log('Old: ', prevEmail, '\nNew: ', newEmail)
+
+        if (!prevEmail.length || !newEmail.length) {
+            setTimeout(() => {
+                setTitle('Warnging Message')
+                setDesc('Please enter current & new email first!')
+                setError(true)
+            }, 1000)
+        }
+        else {
+            // console.log('Email: ', email)
+            // try {
+            //     fetch(`${API}/login`, {
+            //         method: 'POST',
+            //         body: JSON.stringify({
+            //             email: email,
+            //             password: password,
+            //         }),
+            //         headers: {
+            //             'Content-type': 'application/json',
+            //         },
+            //     })
+            //         .then(response => response.json())
+            //         .then(response => {
+            //             if (!response['errors']) {
+            //                 console.log('User login Successfully!') // console.log('L85: ', response.success.token)
+            //                 // if (response.success.token.length > 0) {
+            //                 //     navigation.navigate('Reservations', {
+            //                 //         token: response.success.token,
+            //                 //     })
+            //                 //     storeUserToken(response.success.token)
+            //                 // }
+            //                 setTimeout(() => {
+            //                     setLoader(false)
+            //                     navigation.navigate('Home')
+            //                 }, 2000)
+            //             }
+            //         })
+            //         .catch(error => {
+            //             console.log('Login API Error: ', error)
+
+            //             setTitle('Login Error')
+            //             let tt = `Enter valid Email & Password...! ${error}`
+            //             let er = error
+            //             setDesc(tt)
+            //             setError(true)
+            //         })
+            // } catch (err) {
+            //     console.log('Login Try Catch Error: ', err)
+            // }
+
+            setTimeout(() => {
+                setTitle('Success Message')
+                setDesc(`Your email has been changed successfully!`)
+                setSucces(true)
+            }, 1000)
+        }
+    }
+
+    const leftClickAble = () => {
+        setSucces(false)
+
+        setLoader(false)
+        setTimeout(() => {
+            profileHandler()
+        }, 200)
     }
 
     return (
@@ -80,9 +156,7 @@ const ChangeEmail = ({ navigation }) => {
 
             <LogoBox />
 
-            <KeyboardAvoidingView style={{ justifyContent: 'flex-end' }}
-                behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-            >
+            <KeyboardAvoidingView style={{ justifyContent: 'flex-end' }} behavior={Platform.OS == 'ios' ? 'padding' : 'height'} >
                 <View style={gStyles.bottomView}>
 
                     {/* HEADING */}
@@ -146,9 +220,13 @@ const ChangeEmail = ({ navigation }) => {
 
                     {/* SUBMIT */}
                     <TouchableOpacity
+                        disabled={loader ? true : false}
                         onPress={() => changeEmailHandler()} style={gStyles.largeBtn} activeOpacity={0.9}
                     >
-                        <Text style={gStyles.largeBtnText}>{`SUBMIT`}</Text>
+                        {loader
+                            ? <ActivityIndicator size={'small'} color={Colors.white} />
+                            : <Text style={gStyles.largeBtnText}>{`SUBMIT`}</Text>
+                        }
                     </TouchableOpacity>
 
                     {/* NOTE */}
@@ -158,6 +236,55 @@ const ChangeEmail = ({ navigation }) => {
                     </Text>
 
                 </View>
+
+                {/* MODAL FOR REGISTR ERROR */}
+                <>
+                    {error &&
+                        <CustomModal
+                            title={title}
+                            desc={desc}
+
+                            clickAbleRight={() => {
+                                setError(false)
+                                setLoader(false)
+                            }}
+                            buttonRightText='ok'
+                            // buttonRightStyle={{}}
+                            // buttonRightTextStyle={{}}
+
+                            // clickAbleLeft={() => { setLoader(false) }}
+                            // buttonLeftText='no'
+                            // buttonLeftStyle={{}}
+                            // buttonLeftTextStyle={{}}
+
+                            // image={lock_sign}
+                            // imageStyle={{ width: 30, height: 30 }}
+                        />
+                    }
+                </>
+
+                {/* MODAL FOR REGISTER SUCCESS */}
+                <>
+                    {succes &&
+                        <CustomModal
+                            title={title}
+                            desc={desc}
+
+                            clickAbleRight={leftClickAble}
+                            buttonRightText='ok'
+                            // buttonRightStyle={{}}
+                            // buttonRightTextStyle={{}}
+
+                            // clickAbleLeft={() => { setLoader(false) }}
+                            // buttonLeftText='no'
+                            // buttonLeftStyle={{}}
+                            // buttonLeftTextStyle={{}}
+
+                            // image={lock_sign}
+                            // imageStyle={{ width: 30, height: 30 }}
+                        />
+                    }
+                </>
                 
             </KeyboardAvoidingView>
         </View>

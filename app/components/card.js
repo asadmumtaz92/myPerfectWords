@@ -35,8 +35,7 @@ const Card = ({ item, navigat }) => {
                 },
                 // item.type == 'BACKLOG' && { borderRightWidth: 8, borderBottomRightRadius: 8, borderTopRightRadius: 8 },
             ]}
-            activeOpacity={0.7}
-            onPress={navigat}
+            onPress={navigat} activeOpacity={0.7}
         >
             <View style={styles.innerCard}>
                 <Text numberOfLines={2} style={styles.heading}>{item.heading}</Text>
@@ -48,32 +47,35 @@ const Card = ({ item, navigat }) => {
                     <Text style={styles.time}>{item.time}</Text>
                 </View>
             </View>
-            {/* {item.type != 'BACKLOG' && 
-                <Image
-                    source={
-                        item.type == 'IN PROGRESS' 
-                            ? inProgress
-                            : item.type == 'IN COMPLETE'
-                                ? inComplete
-                                : item.type == 'COMPLETE'
-                                    ? complete
-                                    : null
-                    }
-                    style={styles.sideBar} resizeMode='contain'
-                />
-            }
-            {item.type == 'BACKLOG' &&
-                <View style={styles.typeBox}>
-                    <Text
-                        style={[
-                            styles.type,
-                            item.type == 'BACKLOG' && { color: Colors.backLog, marginRight: -22 }
-                        ]}
-                    >
-                        {item.type}
-                    </Text>
-                </View>
-            } */}
+
+            <>
+                {/* {item.type != 'BACKLOG' && 
+                    <Image
+                        source={
+                            item.type == 'IN PROGRESS' 
+                                ? inProgress
+                                : item.type == 'IN COMPLETE'
+                                    ? inComplete
+                                    : item.type == 'COMPLETE'
+                                        ? complete
+                                        : null
+                        }
+                        style={styles.sideBar} resizeMode='contain'
+                    />
+                }
+                {item.type == 'BACKLOG' &&
+                    <View style={styles.typeBox}>
+                        <Text
+                            style={[
+                                styles.type,
+                                item.type == 'BACKLOG' && { color: Colors.backLog, marginRight: -22 }
+                            ]}
+                        >
+                            {item.type}
+                        </Text>
+                    </View>
+                } */}
+            </>
 
             <View style={styles.typeBox}>
                 <Text
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
             height: 0,
             width: 0,
         },
-        elevation: 5,
+        elevation: 3,
     },
     innerCard: {
         justifyContent: 'space-between',
