@@ -95,7 +95,7 @@ const AboutApp = ({ navigation }) => {
                 StatusBarAnimation='fade'
             />
 
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
                 {/* ABOUT APP DESCRIPTION */}
                 <View style={styles.appNoteBox}>
                     <Text style={styles.appName}>

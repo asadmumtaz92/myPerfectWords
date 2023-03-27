@@ -65,12 +65,26 @@ const Slack_App = ({ navigation }) => {
         if (!email.length || !password.length) {
             setTimeout(() => {
                 setTitle('Login Error')
-                setDesc('Please enter the valid credentials!')
+                setDesc('Please enter email and password first!')
                 setError(true)
             }, 1000)
         }
         else {
             console.log('Email: ', email,'\nPassword: ', password)
+            if(email == 'asadmumtaz92@gmail.com' && password === 'Qwerty@123') {
+                setTimeout(() => {
+                    setLoader(false)
+                    navigation.navigate('Home')
+                }, 2000)
+            }
+            else {
+                setTimeout(() => {
+                    setTitle('Login Error')
+                    setDesc('Please enter the valid credentials!')
+                    setError(true)
+                }, 1000)
+            }
+
             // try {
             //     fetch(`${API}/login`, {
             //         method: 'POST',
@@ -111,10 +125,10 @@ const Slack_App = ({ navigation }) => {
             //     console.log('Login Try Catch Error: ', err)
             // }
 
-            setTimeout(() => {
-                setLoader(false)
-                navigation.navigate('Home')
-            }, 2000)
+            // setTimeout(() => {
+            //     setLoader(false)
+            //     navigation.navigate('Home')
+            // }, 2000)
         }
     }
     const forgotHandler = () => {

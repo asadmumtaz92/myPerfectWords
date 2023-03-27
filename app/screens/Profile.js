@@ -129,7 +129,7 @@ const Profile = ({ navigation }) => {
 
                 {!loader && 
                     <Text style={styles.appVersionText}>
-                        {`App version 1.0 (3)`}
+                        {`App version 1.0 (5)`}
                     </Text>
                 }
                 
