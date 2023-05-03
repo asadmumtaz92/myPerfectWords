@@ -26,7 +26,7 @@ import {
     taskList,
 } from '../constant/tabData'
 
-const Forgot = ({ navigation }) => {
+const Home = ({ navigation }) => {
 
     const [activeTab, setActiveTab] = useState(0)
 
@@ -159,4 +159,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Forgot
+export default Home
